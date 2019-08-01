@@ -35,4 +35,30 @@
 #define APPIMAGE_UPDATER_BRIDGE_HPP_INCLUDED
 #include "appimageupdaterbridge_enums.hpp"
 #include "appimagedeltarevisioner.hpp"
+
+#ifdef FULL_BUILD_ENABLED
+#include <QtPlugin>
+#include <QScopedPointer>
+#include <QJsonObject>
+#include "appimageupdaterdialog.hpp"
+#include "appimageupdaterbridgeinterface.hpp"
+#endif // FULL_BUILD_ENABLED
+
+#ifdef FULL_BUILD_ENABLED
+namespace AppImageUpdaterBridge {
+class AppImageUpdaterBridge : public QObject , AppImageUpdaterBridgeInterface {
+	Q_OBJECT
+	Q_PLUGIN_METADATA(IID AppImageUpdaterBridgeInterface_iid FILE "AppImageUpdaterBridge.json")
+	Q_INTERFACES(AppImageUpdaterBridgeInterface)
+public:
+	AppImageUpdaterBridge(QObject *parent = nullptr);
+
+public Q_SLOTS:
+	void init();
+private:
+	QScopedPointer<AppImageDeltaRevisioner> m_Updater;
+};
+}
+#endif // FULL_BUILD_ENABLED
+
 #endif // APPIMAGE_UPDATER_BRIDGE_HPP_INCLUDED
