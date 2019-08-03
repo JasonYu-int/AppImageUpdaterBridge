@@ -4,7 +4,7 @@
 
 class AppImageUpdaterBridgeInterface {
 public:
-	virtual ~AppImageUpdaterBridgeInterface() {}
+	virtual ~AppImageUpdaterBridgeInterface() = 0;
 public Q_SLOTS:
 	virtual void initAppImageUpdaterBridge() = 0;
 };

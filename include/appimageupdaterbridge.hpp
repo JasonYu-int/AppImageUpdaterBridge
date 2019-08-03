@@ -49,7 +49,7 @@ class AppImageUpdaterBridge : public QObject , AppImageUpdaterBridgeInterface {
 	Q_INTERFACES(AppImageUpdaterBridgeInterface)
 public:
 	AppImageUpdaterBridge(QObject *parent = nullptr);
-
+	~AppImageUpdaterBridge();
 public Q_SLOTS:
 	void initAppImageUpdaterBridge();
 private Q_SLOTS:

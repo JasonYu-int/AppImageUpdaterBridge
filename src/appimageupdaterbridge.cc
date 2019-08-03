@@ -1,6 +1,7 @@
 #include <QMainWindow>
 #include <QApplication>
 #include <QMenuBar>
+#include <QPushButton>
 #include <QScreen>
 #include <QDebug>
 #include <QRegExp>
@@ -173,7 +174,7 @@ void ClassAppImageUpdaterBridge::tryIntegrate(){
 
 		if(QMENUBAR_QOBJECT_NAME_GIVEN && !b_IntegratedQMenuBar){
 			qDebug() << "AppImageUpdaterBridge::INFO: QMenuBar object name given.";
-			integrated = b_IntegratedQMenuBar = integrateQMenubar(widget);	
+			integrated = b_IntegratedQMenuBar = integrateQMenuBar(widget);	
 		}
 
 		if((QPUSHBUTTON_QOBJECT_NAME_GIVEN || QPUSHBUTTON_TEXT_GIVEN) && !b_IntegratedQPushButton){
@@ -215,7 +216,7 @@ bool ClassAppImageUpdaterBridge::integrateQAction(QWidget *widget){
 	qDebug() << "||||||Text: " << action->text();
 	qDebug() << "||||||--------------------";	
 
-	if(action->text().contains(qaction_to_override_text , Qt::CaseInsensitive) && QACTION_TEXT_GIVEN ||
+	if((action->text().contains(qaction_to_override_text , Qt::CaseInsensitive) && QACTION_TEXT_GIVEN) ||
 	    action->objectName() == qaction_to_override_qobject_name){
 		action->disconnect(); // disconnect all slots connected to this.
 		QObject::connect(action , &QAction::triggered , this , &ClassAppImageUpdaterBridge::handleUpdateCheck);
