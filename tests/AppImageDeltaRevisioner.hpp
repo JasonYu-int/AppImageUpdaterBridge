@@ -45,7 +45,7 @@ private slots:
         AIDeltaRev.start();
 	
 	/* This update should take atmost 50 seconds */
-	QVERIFY(spyInfo.wait(50 * 1000));
+	QVERIFY(spyInfo.wait(120*1000));
 	QFile::remove(APPIMAGE_UPDATE_RESULT);
 	}
     }
@@ -90,7 +90,7 @@ private slots:
         QSignalSpy spyInfo(&AIDeltaRev, SIGNAL(updateAvailable(bool,QJsonObject)));
         AIDeltaRev.checkForUpdate();
 
-	QVERIFY(spyInfo.count() || spyInfo.wait(30 * 1000));
+	QVERIFY(spyInfo.count() || spyInfo.wait(180*1000));
 
     }
 
@@ -103,7 +103,7 @@ private slots:
         AIDeltaRev.checkForUpdate();
 	AIDeltaRev.start(); // should not collide, this call should be ignored.
 
-	QVERIFY(spyInfo.count() || spyInfo.wait(30 * 1000));
+	QVERIFY(spyInfo.count() || spyInfo.wait(180*1000));
     }
 
     void noCallsCollide(void){
@@ -117,7 +117,7 @@ private slots:
 	AIDeltaRev.start(); // should not collide, this call should be ignored.
 	AIDeltaRev.getAppImageEmbededInformation();
 
-	QVERIFY(spyInfo.count() || spyInfo.wait(30 * 1000));
+	QVERIFY(spyInfo.count() || spyInfo.wait(180*1000));
     }
 
     void updateShouldSucceed(void){
@@ -128,7 +128,7 @@ private slots:
         QSignalSpy spyInfo(&AIDeltaRev, SIGNAL(finished(QJsonObject , QString)));
         AIDeltaRev.start();
 	
-	QVERIFY(spyInfo.count() || spyInfo.wait(50 * 1000));
+	QVERIFY(spyInfo.count() || spyInfo.wait(120*1000));
     }
 
     void checkErrorSignal(void)
@@ -154,7 +154,7 @@ private slots:
 	AIDeltaRev.checkForUpdate(); // should not collide, this call should be ignored if busy.
 
 	QVERIFY(spyInfo.count() || spyInfo.wait() || 
-		spyInfoCheck.count() || spyInfoCheck.wait(30*1000));
+		spyInfoCheck.count() || spyInfoCheck.wait(180*1000));
     }
 
 
@@ -170,7 +170,7 @@ private slots:
 	AIDeltaRev.start(); // should not collide, this call should be ignored if busy.
 
 	QVERIFY(spyInfo.count() || spyInfo.wait() || 
-		spyInfoStart.count() || spyInfoStart.wait(30*1000));
+		spyInfoStart.count() || spyInfoStart.wait(180*1000));
     }
 
     
@@ -186,7 +186,7 @@ private slots:
 	AIDeltaRev.getAppImageEmbededInformation(); // should not collide, this call should be ignored if busy.
 
 	QVERIFY(spyInfo.count() || spyInfo.wait() || 
-		spyInfoCheck.count() || spyInfoCheck.wait(30*1000));
+		spyInfoCheck.count() || spyInfoCheck.wait(180*1000));
     }
 
 
@@ -202,7 +202,7 @@ private slots:
 	AIDeltaRev.getAppImageEmbededInformation(); // should be ignored if busy.
 
 	QVERIFY(spyInfo.count() || spyInfo.wait() || 
-		spyInfoStart.count() || spyInfoStart.wait(30*1000));
+		spyInfoStart.count() || spyInfoStart.wait(180*1000));
     }
 
     void destructingBeforeFinishShouldNotCrash(void){
@@ -215,7 +215,7 @@ private slots:
 
 		AIDeltaRev.start();
 
-		QVERIFY(spyInfoStart.count() || spyInfoStart.wait(30*1000));
+		QVERIFY(spyInfoStart.count() || spyInfoStart.wait(180*1000));
 	 }
 	 QVERIFY(true);
     }
@@ -230,7 +230,7 @@ private slots:
 
 		AIDeltaRev.start();
 
-		QVERIFY(spyInfoStart.count() || spyInfoStart.wait(30*1000));
+		QVERIFY(spyInfoStart.count() || spyInfoStart.wait(180*1000));
 	 }
 	 QVERIFY(true);
     }
@@ -246,7 +246,7 @@ private slots:
 
 	AIDeltaRev.start();
 
-	QVERIFY(spyInfoStart.count() || spyInfoStart.wait(30*1000));
+	QVERIFY(spyInfoStart.count() || spyInfoStart.wait(180*1000));
 
 	AIDeltaRev.cancel();
 
@@ -254,7 +254,7 @@ private slots:
 
 	AIDeltaRev.start(); // restart after cancel
 
-	QVERIFY(spyInfoFinished.count() || spyInfoFinished.wait(30*1000));
+	QVERIFY(spyInfoFinished.count() || spyInfoFinished.wait(180*1000));
     }
 
 
@@ -269,7 +269,7 @@ private slots:
 
 	AIDeltaRev.start();
 
-	QVERIFY(spyInfoStart.count() || spyInfoStart.wait(30*1000));
+	QVERIFY(spyInfoStart.count() || spyInfoStart.wait(180*1000));
 
 	AIDeltaRev.cancel();
 
@@ -281,7 +281,7 @@ private slots:
 	AIDeltaRev.setAppImage(APPIMAGE_TOOL_MODIFIED_RELATIVE_PATH);
 	AIDeltaRev.start();
 
-	QVERIFY(spyInfoFinished.count() || spyInfoFinished.wait(30*1000));
+	QVERIFY(spyInfoFinished.count() || spyInfoFinished.wait(180*1000));
     }
 
 
