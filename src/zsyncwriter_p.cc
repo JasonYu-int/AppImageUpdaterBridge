@@ -80,8 +80,8 @@ using namespace AppImageUpdaterBridge;
  * Calculate the rsum for a single block of data. */
 static rsum __attribute__ ((pure)) calc_rsum_block(const unsigned char *data, size_t len)
 {
-    register unsigned short a = 0;
-    register unsigned short b = 0;
+     unsigned short a = 0;
+     unsigned short b = 0;
 
     while (len) {
         unsigned char c = *data++;
@@ -829,7 +829,7 @@ qint32 ZsyncWriterPrivate::checkCheckSumsOnHashChain(const struct hash_entry *e,
     unsigned char md4sum[2][CHECKSUM_SIZE];
     signed int done_md4 = -1;
     qint32 got_blocks = 0;
-    register rsum rs = p_CurrentWeakCheckSums.first;
+     rsum rs = p_CurrentWeakCheckSums.first;
 
     /* This is a hint to the caller that they should try matching the next
      * block against a particular hash entry (because at least n_SeqMatches
@@ -949,7 +949,7 @@ qint32 ZsyncWriterPrivate::submitSourceData(unsigned char *data,size_t len, off_
      * [x, x+bs)
      */
     qint32 x = 0;
-    register qint32 bs = n_BlockSize;
+     qint32 bs = n_BlockSize;
     qint32 got_blocks = 0;
 
     if (offset) {
@@ -1061,7 +1061,7 @@ qint32 ZsyncWriterPrivate::submitSourceFile(QFile *file)
     qint32 error = 0;
     off_t in = 0;
     /* Allocate buffer of 16 blocks */
-    register qint32 bufsize = n_BlockSize * 16;
+     qint32 bufsize = n_BlockSize * 16;
     unsigned char *buf = (unsigned char*)malloc(bufsize + n_Context);
     if (!buf)
         return (error = -1);
@@ -1236,12 +1236,12 @@ void ZsyncWriterPrivate::removeBlockFromHash(zs_blockid id)
 qint32 ZsyncWriterPrivate::rangeBeforeBlock(zs_blockid x)
 {
     /* Lowest number and highest number block that it could be inside (0 based) */
-    register qint32 min = 0, max = n_Ranges-1;
+     qint32 min = 0, max = n_Ranges-1;
 
     /* By bisection */
     for (; min<=max;) {
         /* Range number to compare against */
-        register qint32 r = (max+min)/2;
+         qint32 r = (max+min)/2;
 
         if (x > p_Ranges[2*r+1]) min = r+1;  /* After range r */
         else if (x < p_Ranges[2*r]) max = r-1;/* Before range r */
