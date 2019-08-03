@@ -24,6 +24,10 @@ script:
   - make clean
   - qmake "CONFIG+=LOGGING_DISABLED" "CONFIG+=NO_GUI" ..
   - make -j$(nproc) # test if build succeeds without gui and log support
+  - make clean
+  - qmake "CONFIG+=FULL_BUILD" ..
+  - make -j$(nproc) # test if build succeeds with full build
+  - make clean
   - cd ..
   - mkdir build-cmake ; cd build-cmake # Check if it builds as a library using cmake.
   - cmake ..
