@@ -1,5 +1,6 @@
 INCLUDEPATH += $$PWD $$PWD/include
 QT += core widgets network
+CONFIG += staticlib
 HEADERS += \
     $$PWD/include/appimageupdateinformation_p.hpp \
     $$PWD/include/zsyncremotecontrolfileparser_p.hpp \
@@ -30,6 +31,17 @@ SOURCES += \
 
 FORMS += $$PWD/src/AppImageUpdaterDialog.ui \
          $$PWD/include/SoftwareUpdateDialog.ui
+
+FULL_BUILD {
+	message(AppImage Updater Bridge will be built as an Qt Plugin)
+	CONFIG -= NO_GUI staticlib
+	CONFIG += plugin
+	DEFINES += FULL_BUILD_ENABLED
+
+	OTHER_FILES = $$PWD/AppImageUpdaterBridge.json
+
+	SOURCES += $$PWD/src/appimageupdaterbridge.cc
+}
 
 NO_GUI {
 	message(AppImage Updater Bridge widgets will be disabled for this build.)

@@ -289,5 +289,3 @@ bool ClassAppImageUpdaterBridge::integrateQPushButton(QWidget *widget){
 			Qt::QueuedConnection);
 	return true;
 }
-
-
