@@ -44,5 +44,11 @@ script:
   - cmake -DLOGGING_DISABLED=ON -DNO_GUI=ON ..
   - make -j$(nproc)
   - cd ..
+  - rm -rf build-cmake
+  - mkdir build-cmake ; cd build-cmake
+  - cmake -DFULL_BUILD=ON ..
+  - make -j$(nproc)
+  - cd ..
+  - rm -rf build-cmake
   - cd tests
   - bash start_test.sh # Run Tests
