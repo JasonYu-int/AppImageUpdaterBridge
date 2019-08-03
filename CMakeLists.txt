@@ -7,7 +7,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 option(LG "LOGGING_DISABLED" OFF)
 option(NG "NO_GUI" OFF)
-option(FULL_BUILD "FULL_BUILD" OFF)
+option(FB "FULL_BUILD" OFF)
 
 # Let cmake know that this is a release build.
 if(NOT CMAKE_BUILD_TYPE)
@@ -97,7 +97,7 @@ endif()
 
 if(FULL_BUILD)
 	add_library(AppImageUpdaterBridge SHARED ${source})
-	target_compile_definitions(AppImageUpdaterBridge PUBLIC FULL_BUILD_ENABLED=${FULL_BUILD})
+	target_compile_definitions(AppImageUpdaterBridge PUBLIC FULL_BUILD_ENABLED=FB)
 else()
 	add_library(AppImageUpdaterBridge ${source})
 endif()

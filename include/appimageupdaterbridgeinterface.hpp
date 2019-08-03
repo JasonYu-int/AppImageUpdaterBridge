@@ -6,7 +6,7 @@ class AppImageUpdaterBridgeInterface {
 public:
 	virtual ~AppImageUpdaterBridgeInterface() {}
 public Q_SLOTS:
-	virtual void init() = 0;
+	virtual void initAppImageUpdaterBridge() = 0;
 };
 
 #ifndef AppImageUpdaterBridgeInterface_iid

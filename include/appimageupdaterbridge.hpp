@@ -38,13 +38,10 @@
 
 #ifdef FULL_BUILD_ENABLED
 #include <QtPlugin>
-#include <QScopedPointer>
-#include <QJsonObject>
+#include <QTimer>
 #include "appimageupdaterdialog.hpp"
 #include "appimageupdaterbridgeinterface.hpp"
-#endif // FULL_BUILD_ENABLED
 
-#ifdef FULL_BUILD_ENABLED
 namespace AppImageUpdaterBridge {
 class AppImageUpdaterBridge : public QObject , AppImageUpdaterBridgeInterface {
 	Q_OBJECT
@@ -54,9 +51,23 @@ public:
 	AppImageUpdaterBridge(QObject *parent = nullptr);
 
 public Q_SLOTS:
-	void init();
+	void initAppImageUpdaterBridge();
+private Q_SLOTS:
+	void initAutoUpdateCheck();
+	void handleUpdateCheck();
+	void tryIntegrate();
+	bool integrateQMenu(QWidget*);
+	bool integrateQMenuBar(QWidget*);
+	bool integrateQAction(QWidget*);
+	bool integrateQPushButton(QWidget*);
 private:
-	QScopedPointer<AppImageDeltaRevisioner> m_Updater;
+	AppImageDeltaRevisioner *m_Updater;
+	AppImageUpdaterDialog *m_Dialog;
+	bool b_IntegratedQMenu = false,
+	     b_IntegratedQMenuBar = false,
+	     b_IntegratedQPushButton = false,
+	     b_IntegratedQAction = false;
+	QTimer m_Timer;
 };
 }
 #endif // FULL_BUILD_ENABLED
