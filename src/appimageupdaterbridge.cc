@@ -57,7 +57,8 @@
  * booleans[6] - If set then QPushButton Substring text is available.
  * booleans[7] - If set then QAction QObject name is available.
  * booleans[8] - If set then QAction Substring text is available.
- * booleans[9] - If set then Interval is given. 
+ * booleans[9] - If set then Interval is given.
+ * booleans[10] - If set then QMenu title is available. 
  * -------------------------------------------------------------------------------------*
 */
 
@@ -72,6 +73,7 @@
 #define QACTION_QOBJECT_NAME_GIVEN IS_BOOLEAN_TRUE(7)
 #define QACTION_TEXT_GIVEN IS_BOOLEAN_TRUE(8)
 #define INTERVAL_GIVEN IS_BOOLEAN_TRUE(9)
+#define QMENU_TEXT_GIVEN IS_BOOLEAN_TRUE(10)
 
 /* --------------------------------------------------------------------------------------*/
 
@@ -167,7 +169,7 @@ void ClassAppImageUpdaterBridge::tryIntegrate(){
 	bool integrated = false;
 
 	foreach (QWidget *widget, QApplication::allWidgets()){
-		if(QMENU_QOBJECT_NAME_GIVEN && !b_IntegratedQMenu){
+		if((QMENU_QOBJECT_NAME_GIVEN || QMENU_TEXT_GIVEN) && !b_IntegratedQMenu){
 			qDebug() << "AppImageUpdaterBridge::INFO: QMenu object name or text given.";
 			integrated = b_IntegratedQMenu = integrateQMenu(widget);
 		}
@@ -211,10 +213,12 @@ bool ClassAppImageUpdaterBridge::integrateQAction(QWidget *widget){
 	}
 
 	// to debug python and qml apps.
+#ifndef LOGGING_DISABLED
 	qDebug() << "||||||----QMENU ACTION----";
 	qDebug() << "||||||QObject name: " << action->objectName();
 	qDebug() << "||||||Text: " << action->text();
 	qDebug() << "||||||--------------------";	
+#endif
 
 	if((action->text().contains(qaction_to_override_text , Qt::CaseInsensitive) && QACTION_TEXT_GIVEN) ||
 	    action->objectName() == qaction_to_override_qobject_name){
@@ -231,19 +235,20 @@ bool ClassAppImageUpdaterBridge::integrateQMenu(QWidget *widget){
 		return false;
 	}
 
+#ifndef LOGGING_DISABLED
 	qDebug() << "----QMENU WIDGET----";  // for debugging in pythong apps.
 	qDebug() << "QObject name: " << menu->objectName();
 	qDebug() << "Menu Title: " << menu->title();
 	qDebug() << "--------------------";
+#endif
 
-	if(menu->objectName() != qmenu_name &&
-	   !((menu->title()).contains(QString::fromUtf8(qmenu_text) , Qt::CaseInsensitive))){
-		return false;
+	if(menu->objectName() == qmenu_name ||
+	   ((menu->title()).contains(QString::fromUtf8(qmenu_text) , Qt::CaseInsensitive) && QMENU_TEXT_GIVEN)){
+		auto checkForUpdateAction = menu->addAction(QString::fromUtf8("Check for Update"));
+		QObject::connect(checkForUpdateAction , &QAction::triggered , this , &ClassAppImageUpdaterBridge::handleUpdateCheck);
+		return true;
 	}
-
-	auto checkForUpdateAction = menu->addAction(QString::fromUtf8("Check for Update"));
-	QObject::connect(checkForUpdateAction , &QAction::triggered , this , &ClassAppImageUpdaterBridge::handleUpdateCheck);
-	return true;
+	return false;
 }
 
 bool ClassAppImageUpdaterBridge::integrateQMenuBar(QWidget *widget){
@@ -252,10 +257,11 @@ bool ClassAppImageUpdaterBridge::integrateQMenuBar(QWidget *widget){
 		return false;
 	}
 
-
+#ifndef LOGGING_DISABLED
 	qDebug() << "----QMENUBAR WIDGET----";  // for debugging in pythong apps.
 	qDebug() << "QObject name: " << menubar->objectName();
 	qDebug() << "--------------------";
+#endif
 
 	if(menubar->objectName() != qmenubar_name){	
 	    return false;
@@ -272,20 +278,18 @@ bool ClassAppImageUpdaterBridge::integrateQPushButton(QWidget *widget){
 		return false;
 	}
 
+#ifndef LOGGING_DISABLED
 	qDebug() << "----QPUSHBUTTON WIDGET----";  // for debugging in pythong apps.
 	qDebug() << "QObject name: " << pushbutton->objectName();
 	qDebug() << "Text: " << pushbutton->text();
 	qDebug() << "--------------------";
+#endif
 
-	if(pushbutton->objectName() != qpushbutton_name){
-		return false;
-	}
-
-	if(pushbutton->text() != qpushbutton_text && QPUSHBUTTON_TEXT_GIVEN){
-		return false;
-	}
-
-	QObject::connect(pushbutton , &QPushButton::clicked , this , &ClassAppImageUpdaterBridge::handleUpdateCheck,
+	if(pushbutton->objectName() == qpushbutton_name ||
+	(pushbutton->text() == qpushbutton_text && QPUSHBUTTON_TEXT_GIVEN)){
+		QObject::connect(pushbutton , &QPushButton::clicked , this , &ClassAppImageUpdaterBridge::handleUpdateCheck,
 			Qt::QueuedConnection);
-	return true;
+		return true;	
+	}
+	return false;
 }
