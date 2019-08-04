@@ -34,12 +34,12 @@
 /*------------------------------------------------------------------------------------------*/
 /* | */const char *interval = "75629552e6e8286442676be60e7da67d";                        /*|*/
 /* | */const char *qmenu_name = "871abbc22416bb25429594dec45caf1f";                      /*|*/
-/* | */const char *qmenu_text = "";                                                      /*|*/
+/* | */const char *qmenu_text = "97393fe3f5e452adfc36db9dfaff5628";                      /*|*/
 /* | */const char *qmenubar_name = "bfa40825ef36e05bbc2c561595829a92";                   /*|*/
 /* | */const char *qpushbutton_name = "930b29debfb164461b39342d59e2565c";                /*|*/
-/* | */const char *qpushbutton_text = "";                                                /*|*/
+/* | */const char *qpushbutton_text = "130047834d253af84d40d1c0fb52f02d";                /*|*/
 /* | */const char *qaction_to_override_qobject_name = "0b6e66aa3800ad9cad94fe41984b9b56";/*|*/
-/* | */const char *qaction_to_override_text = "";                                        /*|*/
+/* | */const char *qaction_to_override_text = "78c9a822db28277212b8be5d73764c7f";        /*|*/
 /* | */const char *booleans = "4c6160c2d6bfeba1";                                        /*|*/
 /*------------------------------------------------------------------------------------------*/
 
