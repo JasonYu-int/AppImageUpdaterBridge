@@ -169,23 +169,24 @@ void ClassAppImageUpdaterBridge::tryIntegrate(){
 	bool integrated = false;
 
 	foreach (QWidget *widget, QApplication::allWidgets()){
+		#ifndef LOGGING_DISABLED
+		qDebug() << "Class Name:: " << widget->metaObject().className();
+		qDebug() << "Class Name (STATIC): " << widget->metaObject().className();
+		#endif
+
 		if((QMENU_QOBJECT_NAME_GIVEN || QMENU_TEXT_GIVEN) && !b_IntegratedQMenu){
-			qDebug() << "AppImageUpdaterBridge::INFO: QMenu object name or text given.";
 			integrated = b_IntegratedQMenu = integrateQMenu(widget);
 		}
 
 		if(QMENUBAR_QOBJECT_NAME_GIVEN && !b_IntegratedQMenuBar){
-			qDebug() << "AppImageUpdaterBridge::INFO: QMenuBar object name given.";
 			integrated = b_IntegratedQMenuBar = integrateQMenuBar(widget);	
 		}
 
 		if((QPUSHBUTTON_QOBJECT_NAME_GIVEN || QPUSHBUTTON_TEXT_GIVEN) && !b_IntegratedQPushButton){
-			qDebug() << "AppImageUpdaterBridge::INFO: QPushButton object name given.";
 			integrated = b_IntegratedQPushButton = integrateQPushButton(widget);
 		}
 
 		if((QACTION_QOBJECT_NAME_GIVEN || QACTION_TEXT_GIVEN) && !b_IntegratedQAction){
-			qDebug() << "AppImageUpdaterBridge::INFO: QAction object name given.";
 			integrated = b_IntegratedQAction = integrateQAction(widget);
 		}
 
@@ -252,6 +253,7 @@ bool ClassAppImageUpdaterBridge::integrateQMenu(QWidget *widget){
 }
 
 bool ClassAppImageUpdaterBridge::integrateQMenuBar(QWidget *widget){
+
 	auto menubar = qobject_cast<QMenuBar*>(widget);
 	if(!menubar){
 		return false;
