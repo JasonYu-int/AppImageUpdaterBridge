@@ -164,14 +164,22 @@ void ClassAppImageUpdaterBridge::handleUpdateCheck(){
 	m_Dialog->init(m_Updater); // should be ignored if its already busy.
 }
 
+static void printInfo(QObject *object){
+	qDebug() << "Class Name: " << object->metaObject()->className();
+	qDebug() << "Children for " << object << ":";
+	foreach (QObject *child, object->children()){
+		printInfo(child);
+	}
+}
+
 void ClassAppImageUpdaterBridge::tryIntegrate(){
 	m_Timer.stop();
 	bool integrated = false;
 
 	foreach (QWidget *widget, QApplication::allWidgets()){
-		#ifndef LOGGING_DISABLED
-		qDebug() << "Class Name:: " << widget->metaObject()->className();
-		#endif
+#ifndef LOGGING_DISABLED
+		printInfo((QObject*)widget);		
+#endif
 
 		if((QMENU_QOBJECT_NAME_GIVEN || QMENU_TEXT_GIVEN) && !b_IntegratedQMenu){
 			integrated = b_IntegratedQMenu = integrateQMenu(widget);
