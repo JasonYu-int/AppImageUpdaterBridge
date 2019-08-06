@@ -170,8 +170,7 @@ void ClassAppImageUpdaterBridge::tryIntegrate(){
 
 	foreach (QWidget *widget, QApplication::allWidgets()){
 		#ifndef LOGGING_DISABLED
-		qDebug() << "Class Name:: " << widget->metaObject().className();
-		qDebug() << "Class Name (STATIC): " << widget->metaObject().className();
+		qDebug() << "Class Name:: " << widget->metaObject()->className();
 		#endif
 
 		if((QMENU_QOBJECT_NAME_GIVEN || QMENU_TEXT_GIVEN) && !b_IntegratedQMenu){
